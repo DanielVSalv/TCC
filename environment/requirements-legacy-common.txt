@@ -1,0 +1,14 @@
+# Shared orchestration/runtime dependencies compatible with the Python 3.7 model
+# environments. Install this before a model-specific requirements file.
+pandas==1.3.5
+openpyxl==3.0.10
+PyYAML==6.0.1
+PyMuPDF==1.22.5
+lxml==4.9.4
+beautifulsoup4==4.12.3
+apted==1.0.3
+pytesseract==0.3.10
+tqdm==4.66.5
+matplotlib==3.3.4
+scikit-learn==1.0.2
+pytest==7.4.4

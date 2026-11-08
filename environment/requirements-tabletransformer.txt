@@ -1,0 +1,18 @@
+# Ambiente específico para Table Transformer / TATR
+# (Smock et al., "PubTables-1M", 2022).
+# Implementação oficial: integrado à biblioteca `transformers` da Hugging Face
+# (classe TableTransformerForObjectDetection). Código original:
+# https://github.com/microsoft/table-transformer
+# Checkpoint oficial: microsoft/table-transformer-structure-recognition (MIT).
+#
+# Este mesmo ambiente também é usado por src/data_prep/table_detector.py (detecção
+# de tabela em PDF cru, checkpoint irmão microsoft/table-transformer-detection) —
+# mesma biblioteca (`transformers`), mesma classe de modelo, só muda o checkpoint.
+
+torch==2.3.1
+torchvision==0.18.1
+transformers==4.44.2
+timm==1.0.9
+huggingface_hub>=0.24.0
+Pillow==10.4.0
+numpy==1.26.4

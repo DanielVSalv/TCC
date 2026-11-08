@@ -1,0 +1,127 @@
+# Configuração central do experimento.
+# Editar este arquivo conforme os datasets/modelos forem sendo integrados.
+
+experiment:
+  name: "tsr_comparativo_v1"
+  seed: 42
+  output_dir: "results/"
+
+datasets:
+  # PubTabNet e FinTabNet usam o mesmo loader (src/data_prep/dataset_loaders/
+  # pubtabnet_fintabnet_loader.py), pois compartilham exatamente o mesmo schema de
+  # anotação (.jsonl com html.structure.tokens + html.cells). Os arquivos locais
+  # são subconjuntos convertidos do formato OTSL; ver a metodologia no README.
+  pubtabnet:
+    enabled: true
+    raw_dir: "data/raw/pubtabnet"
+    ground_truth_dir: "data/ground_truth/pubtabnet"  # não usado por este loader (gabarito vem do próprio .jsonl); mantido por consistência com os demais datasets
+    annotations_filename: "PubTabNet_OTSL_sample_seed42.jsonl"
+    split: "val"          # PubTabNet não distribui gabarito público para o split "test"
+    sample_size: 50        # amostra aleatória reprodutível, fixada pelo manifesto
+    sample_seed: 42
+
+  fintabnet:
+    enabled: true
+    raw_dir: "data/raw/fintabnet"
+    ground_truth_dir: "data/ground_truth/fintabnet"  # idem pubtabnet: não usado, gabarito vem do .jsonl
+    annotations_filename: "FinTabNet_OTSL_sample_seed42.jsonl"
+    split: "test"
+    sample_size: 50        # amostra aleatória reprodutível, fixada pelo manifesto
+    sample_seed: 42
+
+  scitsr:
+    enabled: true
+    raw_dir: "data/raw/scitsr"   # pasta raiz do SciTSR já extraída (deve conter img/, structure/, chunk/)
+    ground_truth_dir: "data/ground_truth/scitsr"  # não usado; o gabarito do SciTSR já vem dentro de raw_dir/structure/
+    split: "test"
+    sample_size: 50
+    sample_seed: 42
+
+  corporate:
+    enabled: true
+    raw_dir: "data/corporate"                       # PDFs crus, sem anotação
+    processed_dir: "data/processed/corporate-anonymized"
+    ground_truth_dir: "data/ground_truth/corporate-anonymized"
+    split: null
+    sample_size: null       # duas tabelas curadas, uma por PDF
+    privacy:
+      source_processed_dir: "data/processed/corporate"
+      source_ground_truth_dir: "data/ground_truth/corporate"
+      source_manifest_path: "data/processed/corporate/manifest.csv"
+      source_pages_path: "data/privacy/corporate_pages.yaml"
+      rules_path: "data/privacy/corporate_redactions.yaml"
+      authorization_confirmed: false
+    # A extração escreve apenas na área-fonte privada; a execução usa os recortes
+    # anonimizados gerados pelo comando src.data_prep.anonymize_corporate.
+    table_detection:
+      checkpoint: "microsoft/table-transformer-detection"
+      score_threshold: 0.8
+      dpi: 200
+      max_dimension: 1024
+      crop_padding_px: 12
+      manifest_path: "data/processed/corporate-anonymized/manifest.csv"
+
+models:
+  tableformer:
+    enabled: true
+    runner_module: "src.models.tableformer_runner"
+    # Checkpoint oficial baixado automaticamente do Hugging Face Hub
+    # (repo "ds4sd/docling-models") — ver src/models/tableformer_runner.py.
+    # null baixa a snapshot oficial; um valor local deve apontar ao diretório
+    # model_artifacts/tableformer/<variant> contendo os pesos dessa variante.
+    checkpoint_path: null
+    revision: "36bebf56681740529abd09f5473a93a69373fbf0"
+    variant: "fast"          # "fast" ou "accurate"
+    venv: ".venv-tableformer"
+
+  tabstructnet:
+    enabled: true
+    runner_module: "src.models.tabstructnet_runner"
+    # Pesos oficiais (arquivo .h5, treinado em SciTSR) — baixar manualmente do
+    # Google Drive (links exatos confirmados em
+    # third_party/TabStructNet/trained_model/tab/logs/*/note.txt):
+    #   mask_rcnn_tab_0100.h5 (SciTSR):
+    #     https://drive.google.com/drive/folders/1DRFbOW5FSl4A73wgw5i9O0JKkRegyO6-
+    #   mask_rcnn_tab_0120.h5 (SciTSR + fine-tuning UNLV):
+    #     https://drive.google.com/drive/folders/1t5Io8q_g9MkM2KyYXG3s9b0NOVo3RIDw
+    # Pode apontar tanto para o arquivo .h5 diretamente quanto para o diretório de
+    # logs (nesse caso, o runner usa model.find_last() para achar o mais recente).
+    checkpoint_path: "third_party/TabStructNet/trained_model/tab/logs/tab20200821T0923/mask_rcnn_tab_0100.h5"
+    repo_dir: "third_party/TabStructNet"
+    venv: ".venv-tabstructnet"
+
+  tabletransformer:
+    enabled: true
+    runner_module: "src.models.tabletransformer_runner"
+    # Identificador do Hugging Face Hub, ou diretório local com checkpoint salvo via
+    # save_pretrained() para uso totalmente offline.
+    checkpoint_path: "microsoft/table-transformer-structure-recognition"
+    revision: "f4d4bdc85c3fe4b1fa49658882a5d38bbdd0f343"
+    score_threshold: 0.7
+    venv: ".venv-tabletransformer"
+
+  slanet:
+    enabled: true
+    runner_module: "src.models.slanet_runner"
+    # null uses the English SLANet inference checkpoint selected by PP-StructureV2.
+    checkpoint_path: null
+    table_algorithm: "SLANet"
+    language: "en"
+    device: "cpu"
+    venv: ".venv-slanet"
+
+evaluation:
+  metrics: ["teds", "s_teds", "cell_f1"]
+
+text_recovery:
+  mode: "auto"                 # PDF vetorial no corporativo; OCR nos demais inputs
+  ocr_language: "eng+por"
+  ocr_page_segmentation_mode: 6
+  ocr_min_confidence: 0.0
+  tesseract_cmd: "C:/Program Files/Tesseract-OCR/tesseract.exe"  # use null fora desta máquina
+  min_native_words: 3
+  min_word_overlap: 0.2
+
+export:
+  spreadsheet_format: "xlsx"
+  output_dir: "results/spreadsheets"

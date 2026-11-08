@@ -1,0 +1,49 @@
+# Ambientes virtuais
+.venv*/
+venv/
+env/
+
+# Dados (pesados / não versionados)
+data/raw/*
+!data/raw/*/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/corporate/*
+!data/corporate/.gitkeep
+data/privacy/
+data/ground_truth/corporate/
+data/ground_truth/corporate-anonymized/
+
+# Checkpoints e pesos de modelos
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+*.h5
+*.hdf5
+checkpoints/
+
+# Resultados gerados
+results/logs/*
+results/metrics/*
+results/spreadsheets/*
+results/benchmarks/**/logs/
+results/benchmarks/**/output/spreadsheets/
+results/benchmarks/**/output/metrics/corporate_*.csv
+!results/logs/.gitkeep
+!results/metrics/.gitkeep
+!results/spreadsheets/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# SO / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Texto do TCC
+/text/

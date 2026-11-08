@@ -1,0 +1,20 @@
+# Ambiente base: orquestração, preparação de dados, normalização, avaliação e exportação.
+# NÃO inclui dependências pesadas de nenhum modelo específico (ficam nos requirements
+# próprios de cada runner), para evitar conflitos.
+
+pandas==2.2.2
+numpy==1.26.4
+openpyxl==3.1.5
+PyYAML==6.0.2
+Pillow==10.4.0
+opencv-python-headless==4.10.0.84
+pymupdf==1.24.10   # rasterização de PDF (src/data_prep/extract_table_regions.py), sem depender de Poppler
+lxml==5.3.0
+beautifulsoup4==4.12.3
+apted==1.0.3          # usado no cálculo de TEDS (tree edit distance)
+distance==0.1.3       # distância de texto usada pela referência PubTabNet TEDS
+pytesseract==0.3.10   # binding OCR; requer o executável Tesseract instalado no sistema
+tqdm==4.66.5
+matplotlib==3.9.2
+scikit-learn==1.5.2
+pytest==8.3.3

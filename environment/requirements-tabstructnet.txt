@@ -1,0 +1,38 @@
+# Ambiente específico para TabStructNet (Raja; Mondal; Jawahar, ECCV 2020).
+# Implementação oficial: https://github.com/sachinraja13/TabStructNet
+# Construído sobre o Mask R-CNN do matterport (github.com/matterport/Mask_RCNN),
+# em TensorFlow 1.x / Keras 2.x — framework legado, incompatível com os demais
+# ambientes deste projeto. Pesos oficiais (treinados em SciTSR): Google Drive
+# indicado no README do repositório.
+#
+# ATENÇÃO: TensorFlow 1.x exige Python <= 3.7. Se o restante do projeto usar uma
+# versão de Python mais recente, este ambiente precisa ser criado com um
+# interpretador Python 3.7 dedicado (pyenv, conda, etc.), não apenas um venv comum.
+
+tensorflow==1.15.5   # ou tensorflow-gpu==1.15.5, conforme disponibilidade de GPU
+keras==2.2.5
+# TensorFlow 1.15 generated protobuf bindings are incompatible with protobuf 4+.
+protobuf==3.20.3
+opencv-python==4.5.5.64
+Pillow==8.4.0
+numpy==1.18.5
+lxml==5.3.0
+scikit-image==0.17.2
+
+# Confirmado como necessário ao ler os imports reais de samples/tabnet/tabnet.py e
+# xml_generating_postprocessor/cell_postprocessor_adj.py (third_party/TabStructNet/):
+# 2.0.2 has no Windows wheel and tries to build with an incompatible legacy
+# setup_requires flow. 2.0.7 keeps the same API and publishes a cp37 Windows wheel.
+pycocotools==2.0.7
+imgaug==0.4.0
+matplotlib==3.3.4     # versão compatível com Python 3.7-3.9, não a do requirements-common.txt
+intervaltree==3.1.0
+ipython==7.34.0       # requerido pelo import de mrcnn.visualize em tabnet.py
+pytesseract==0.3.10   # só é chamado se ADD_CONNTENT_IN_XML=True no postprocessador; manter por completude
+xlwt==1.3.0
+
+# NÃO instalar via PyPI — o pacote "mrcnn" do PyPI não é o usado aqui. O repositório
+# oficial do TabStructNet já inclui sua PRÓPRIA cópia modificada do Mask_RCNN dentro
+# de third_party/TabStructNet/mrcnn/ (com as saídas extras row_adj/col_adj). Rodar
+# com essa pasta no sys.path é suficiente; não precisa (e não deve) instalar nenhuma
+# outra distribuição de "mrcnn".

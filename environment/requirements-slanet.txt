@@ -1,0 +1,5 @@
+# CPU inference for SLANet through PP-StructureV2.
+# Keep PaddleOCR 2.x: the 2.x PPStructure API is used by this runner.
+-r requirements-common.txt
+paddlepaddle==3.0.0
+paddleocr==2.10.0

@@ -1,0 +1,90 @@
+experiment:
+  name: tsr_comparativo_v1
+  seed: 42
+  output_dir: results/
+datasets:
+  pubtabnet:
+    enabled: true
+    raw_dir: data/raw/pubtabnet
+    ground_truth_dir: data/ground_truth/pubtabnet
+    annotations_filename: PubTabNet_2.0.0.jsonl
+    split: val
+    sample_size: 5
+  fintabnet:
+    enabled: true
+    raw_dir: data/raw/fintabnet
+    ground_truth_dir: data/ground_truth/fintabnet
+    annotations_filename: FinTabNet_1.0.0.jsonl
+    split: test
+    sample_size: 5
+  scitsr:
+    enabled: true
+    raw_dir: data/raw/scitsr
+    ground_truth_dir: data/ground_truth/scitsr
+    split: test
+    sample_size: 50
+    sample_seed: 42
+  corporate:
+    enabled: true
+    raw_dir: data/corporate
+    processed_dir: data/processed/corporate
+    ground_truth_dir: data/ground_truth/corporate
+    split: null
+    sample_size: null
+    table_detection:
+      checkpoint: microsoft/table-transformer-detection
+      score_threshold: 0.8
+      dpi: 200
+      max_dimension: 1024
+      crop_padding_px: 12
+      manifest_path: data/processed/corporate/manifest.csv
+      pages_by_pdf:
+        Corporativoteste1.pdf:
+        - 34
+        Corporativoteste2.pdf:
+        - 148
+models:
+  tableformer:
+    enabled: true
+    runner_module: src.models.tableformer_runner
+    checkpoint_path: null
+    revision: 36bebf56681740529abd09f5473a93a69373fbf0
+    variant: fast
+    venv: .venv-tableformer
+  tabstructnet:
+    enabled: true
+    runner_module: src.models.tabstructnet_runner
+    checkpoint_path: third_party/TabStructNet/trained_model/tab/logs/tab20200821T0923/mask_rcnn_tab_0100.h5
+    repo_dir: third_party/TabStructNet
+    venv: .venv-tabstructnet
+  tabletransformer:
+    enabled: true
+    runner_module: src.models.tabletransformer_runner
+    checkpoint_path: microsoft/table-transformer-structure-recognition
+    revision: f4d4bdc85c3fe4b1fa49658882a5d38bbdd0f343
+    score_threshold: 0.7
+    venv: .venv-tabletransformer
+  slanet:
+    enabled: true
+    runner_module: src.models.slanet_runner
+    checkpoint_path: null
+    table_algorithm: SLANet
+    language: en
+    device: cpu
+    venv: .venv-slanet
+evaluation:
+  metrics:
+  - teds
+  - s_teds
+  - cell_f1
+text_recovery:
+  mode: auto
+  ocr_language: eng+por
+  ocr_page_segmentation_mode: 6
+  ocr_min_confidence: 0.0
+  tesseract_cmd: C:/Program Files/Tesseract-OCR/tesseract.exe
+  min_native_words: 3
+  min_word_overlap: 0.2
+export:
+  spreadsheet_format: xlsx
+  output_dir: results/spreadsheets

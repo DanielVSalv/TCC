@@ -1,0 +1,31 @@
+{
+  "run_id": "slanet-final-20261024",
+  "status": "completed",
+  "created_at_utc": "2026-10-24T04:53:04.419286+00:00",
+  "code_version": "sha256:ec1ecdcda65e76284a3d4926d427f76ac79ab0062193d77ec379f7bd618121cd",
+  "seed": 42,
+  "sample_manifest_sha256": "4a561fef65fa38afeb44b645e5dd0ade35df4b715fc3ded5f1681ef13e4e3224",
+  "sample_count": 62,
+  "sample_counts_by_dataset": {
+    "pubtabnet": 5,
+    "fintabnet": 5,
+    "scitsr": 50,
+    "corporate": 2
+  },
+  "model_statuses": {
+    "slanet": "completed"
+  },
+  "sample_outcomes_by_model": {
+    "slanet": {
+      "completed": 62
+    }
+  },
+  "paired_inference_note": "Intervals and exact sign-flip p-values are exploratory with the configured small sample counts; they do not establish model superiority.",
+  "outputs": {
+    "metrics_by_sample": "metrics_by_sample.csv",
+    "summary_by_dataset_model": "summary_by_dataset_model.csv",
+    "paired_comparisons": "paired_comparisons.csv",
+    "xlsx_audit": "xlsx_audit.csv",
+    "attribute_summary": "attribute_summary.csv"
+  }
+}

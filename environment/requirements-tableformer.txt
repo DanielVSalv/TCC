@@ -1,0 +1,20 @@
+# Ambiente específico para TableFormer (Nassar et al., CVPR 2022).
+# Implementação oficial: docling-ibm-models (IBM/Docling).
+# https://github.com/docling-project/docling-ibm-models
+# Checkpoint oficial baixado automaticamente do Hugging Face Hub em tempo de execução
+# (repo "ds4sd/docling-models") via huggingface_hub.snapshot_download — ver
+# src/models/tableformer_runner.py.
+
+docling-ibm-models>=2.0.0
+huggingface_hub>=0.24.0
+torch==2.3.1
+torchvision==0.18.1
+opencv-python-headless==4.10.0.84
+Pillow==10.4.0
+numpy==1.26.4
+
+# Necessário para construir o "iocr_page" (ver src/data_prep/build_iocr_page.py e a
+# nota de arquitetura em tableformer_runner.py). pytesseract é só o binding Python —
+# também precisa do binário `tesseract-ocr` instalado no sistema operacional
+# (ex.: `apt-get install tesseract-ocr` no Ubuntu/Debian).
+pytesseract==0.3.10

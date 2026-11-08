@@ -1,0 +1,40 @@
+{
+  "run_id": "paired-20261022",
+  "status": "partial_or_failed",
+  "created_at_utc": "2026-10-22T17:43:12.081532+00:00",
+  "code_version": "sha256:671a67be474257c5fb055ad80f6d49254c5330e283156b2ec7e01fba4290fd7c",
+  "seed": 42,
+  "sample_manifest_sha256": "5bc30e6195f8d2f3586e484518b62b768f862e1a0c6fbfabe74e6e13ea6267f3",
+  "sample_count": 17,
+  "sample_counts_by_dataset": {
+    "pubtabnet": 5,
+    "fintabnet": 5,
+    "scitsr": 5,
+    "corporate": 2
+  },
+  "model_statuses": {
+    "tableformer": "completed",
+    "tabstructnet": "completed",
+    "tabletransformer": "completed"
+  },
+  "sample_outcomes_by_model": {
+    "tableformer": {
+      "completed": 17
+    },
+    "tabstructnet": {
+      "completed": 17
+    },
+    "tabletransformer": {
+      "completed": 16,
+      "error": 1
+    }
+  },
+  "paired_inference_note": "Intervals and exact sign-flip p-values are exploratory with the configured small sample counts; they do not establish model superiority.",
+  "outputs": {
+    "metrics_by_sample": "metrics_by_sample.csv",
+    "summary_by_dataset_model": "summary_by_dataset_model.csv",
+    "paired_comparisons": "paired_comparisons.csv",
+    "xlsx_audit": "xlsx_audit.csv",
+    "attribute_summary": "attribute_summary.csv"
+  }
+}
